@@ -1,9 +1,9 @@
 name: Run CFNB Regularly
 
 on:
-  workflow_dispatch: # 支持你随时手动点击运行
+  workflow_dispatch: # 支持手动点击运行
   schedule:
-    - cron: '0 */2 * * *' # 每 2 小时全自动开机运行一次
+    - cron: '0 */2 * * *' # 每 2 小时自动开机
 
 jobs:
   run-script:
@@ -22,12 +22,12 @@ jobs:
         pip install requests
 
     - name: Run main script
-      # ✅ 完美保持原作者最纯正的高质量测速逻辑
+      # ✅ 纯正作者测速逻辑，不夹带任何修改
       run: |
         python main.py
 
     - name: Commit and Push changes
-      # ✅ 彻底修复：精准推送到你自己的仓库，绝不往原作者仓库乱撞
+      # ✅ 带着你锁好的永久钥匙，精准推回你自己的项目，绝不乱撞
       env:
         MY_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
