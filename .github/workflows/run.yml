@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false # 💡 核心改动 1：禁用默认的只读凭证，防止它自动连接原作者仓库
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -22,17 +24,22 @@ jobs:
         pip install requests
 
     - name: Run main script
-      # ✅ 纯正作者测速逻辑，不夹带任何修改
+      # ✅ 纯正作者测速逻辑，不改动任何测速核心
       run: |
         python main.py
 
     - name: Commit and Push changes
-      # ✅ 带着你锁好的永久钥匙，精准推回你自己的项目，绝不乱撞
+      # 💡 核心改动 2：强制机器人使用你的专属 GH_TOKEN 永久钥匙
       env:
         MY_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add ip.txt
-        git commit -m "Automated IP Update" || exit 0
-        git push "https://x-access-token:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main
+        
+        # 只有生成了 ip.txt 才推盘
+        if [ -f "ip.txt" ]; then
+          git add ip.txt
+          git commit -m "Automated IP Update" || exit 0
+          # 💡 核心改动 3：使用绝对路径认证，强行把数据塞进你自己的 MonaLisa1028 仓库主干
+          git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
+        fi
