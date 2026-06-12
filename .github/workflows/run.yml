@@ -21,9 +21,10 @@ jobs:
       run: |
         pip install requests
 
-    - name: Run main script
+    - name: Run main script with automatic input
+      # 💡 核心修复：自动给原作者的脚本塞入测速大小 "5" 并自动回车，绝不卡死
       run: |
-        python main.py
+        echo "5" | python main.py
 
     - name: Commit and Push changes
       run: |
