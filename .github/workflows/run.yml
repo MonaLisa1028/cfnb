@@ -22,17 +22,17 @@ jobs:
         pip install requests
 
     - name: Run main script
-      # 💡 完美恢复：直接运行作者的源文件，不夹带任何修改
+      # ✅ 完美保持原作者最纯正的高质量测速逻辑
       run: |
         python main.py
 
     - name: Commit and Push changes
-      # 💡 强力保障：只在最后一步存盘时带上你的钥匙，确保顺利通关
+      # ✅ 彻底修复：精准推送到你自己的仓库，绝不往原作者仓库乱撞
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        MY_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add ip.txt
         git commit -m "Automated IP Update" || exit 0
-        git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+        git push "https://x-access-token:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main
