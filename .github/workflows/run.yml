@@ -1,57 +1,48 @@
 name: Run CFNB Regularly
 
 on:
-  workflow_dispatch: # 支持手动点击运行
   schedule:
-    - cron: '0 */2 * * *' # 每 2 小时自动开机
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        persist-credentials: false # 💡 核心改动 1：禁用默认的只读凭证，防止它自动连接原作者仓库
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-    - name: Install dependencies
-      run: |
-        pip install requests
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Run main script
-      # ✅ 纯正作者测速逻辑，不改动任何测速核心
-      run: |
-        python main.py
+      - name: Run script
+        env:
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python main.py
 
-    - name: Commit and Push changes
-      env:
-        MY_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        
-        if [ -f "ip.txt" ]; then
-          # 1. 先把原文件备份一下（防错）
-          cp ip.txt original_ip.txt
+      - name: Commit and Push changes
+        env:
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # 2. 核心逻辑：从原始结果中，按网速从大到小（-k2 -nr）提取指定数量
-          # 如果某个地区节点不足，这几行会自动处理，不会报错
-          grep "#HK" original_ip.txt | sort -t' ' -k2 -nr | head -n 5 > sorted_ip.txt
-          grep "#JP" original_ip.txt | sort -t' ' -k2 -nr | head -n 2 >> sorted_ip.txt
-          grep "#US" original_ip.txt | sort -t' ' -k2 -nr | head -n 3 >> sorted_ip.txt
-          
-          # 3. 如果通过上面的筛选，最终结果不足 10 个（比如没抓到足够多的 HK），
-          # 我们可以选择补齐，或者直接保留当前已有的高质量结果。
-          # 这里直接覆盖回 ip.txt
-          mv sorted_ip.txt ip.txt
-          
-          # 4. 执行提交
-          git add ip.txt
-          git commit -m "Automated IP Update: HK5-JP2-US3 Logic" || exit 0
-          git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
-        fi
+          if [ -f "ip.txt" ]; then
+            # 💡 精准重组外挂：按 HK-5, JP-2, US-3 的比例裁剪和排序
+            # 如果测速结果中没有 US（因为我们在 config 里禁用了），它会按优先级提取
+            grep "#HK" ip.txt | sort -t' ' -k2 -nr | head -n 5 > temp_ip.txt
+            grep "#JP" ip.txt | sort -t' ' -k2 -nr | head -n 2 >> temp_ip.txt
+            # 如果你有特定的 US 需求，可以取消下面这行的注释，但需要先在 config 中允许 US
+            # grep "#US" ip.txt | sort -t' ' -k2 -nr | head -n 3 >> temp_ip.txt
+            
+            mv temp_ip.txt ip.txt
+            
+            git add ip.txt
+            git commit -m "Automated IP Update: HK5-JP2-US3 Logic" || exit 0
+            git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
+          fi
