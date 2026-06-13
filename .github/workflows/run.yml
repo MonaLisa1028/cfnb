@@ -29,17 +29,22 @@ jobs:
         python main.py
 
     - name: Commit and Push changes
-      # 💡 核心改动 2：强制机器人使用你的专属 GH_TOKEN 永久钥匙
       env:
         MY_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
-        # 只有生成了 ip.txt 才推盘
         if [ -f "ip.txt" ]; then
+          # 💡 强力纠偏外挂：不管原文件多乱，精准拦截提取我们要的数量
+          grep "#HK" ip.txt | head -n 5 > temp_ip.txt
+          grep "#JP" ip.txt | head -n 2 >> temp_ip.txt
+          grep "#US" ip.txt | head -n 3 >> temp_ip.txt
+          
+          # 将排版完美的结果覆盖回 ip.txt
+          mv temp_ip.txt ip.txt
+          
           git add ip.txt
-          git commit -m "Automated IP Update" || exit 0
-          # 💡 核心改动 3：使用绝对路径认证，强行把数据塞进你自己的 MonaLisa1028 仓库主干
+          git commit -m "Automated IP Update with Custom Sorting" || exit 0
           git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
         fi
