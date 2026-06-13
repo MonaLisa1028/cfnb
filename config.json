@@ -1,37 +1,31 @@
 {
-    "_comment": "Cloudflare IP 优选工具配置文件 - 完美破解版：香港5、日本2、美国3",
+    "_comment": "Cloudflare IP 优选工具配置文件 - 最终完美定制版",
 
-    "USE_GLOBAL_MODE": true,
-    "_comment_USE_GLOBAL_MODE": "💡 核心改动 1：改回 true。利用全局测速模式，这样全网最快的节点会从大到小严格排序",
+    "USE_GLOBAL_MODE": false,
+    "_comment_USE_GLOBAL_MODE": "设为 false 开启国家独立赛道，确保每个国家都能跑完网速测速",
 
     "GLOBAL_TOP_N": 10,
-    "_comment_GLOBAL_TOP_N": "💡 核心改动 2：最终输出的总数死死控在 10 个",
+    "_comment_GLOBAL_TOP_N": "最终输出总量",
 
     "PER_COUNTRY_TOP_N": 5,
-    "_comment_PER_COUNTRY_TOP_N": "进入候选池的分组上限数",
+    "_comment_PER_COUNTRY_TOP_N": "每个国家独立赛道选出 5 个候选节点",
 
     "DNS_UPDATE_TARGET_COUNT": 10,
-    "_comment_DNS_UPDATE_TARGET_COUNT": "输出到 ip.txt 的最终数量",
-
-    "FILTER_COUNTRIES_ENABLED": true,
-    "_comment_FILTER_COUNTRIES_ENABLED": "开启白名单过滤",
+    "_comment_DNS_UPDATE_TARGET_COUNT": "最终存盘总数",
 
     "ALLOWED_COUNTRIES": ["HK", "JP", "US"],
-    "_comment_ALLOWED_COUNTRIES": "只保留香港、日本、美国",
+    "_comment_ALLOWED_COUNTRIES": "定义国家顺序，此处顺序将决定后续脚本的处理优先级",
 
+    "FILTER_COUNTRIES_ENABLED": true,
     "PRE_FILTER_BLOCKED_ENABLED": true,
     "PRE_FILTER_BLOCKED_COUNTRIES": ["CN"],
     "PRE_FILTER_PORT_ENABLED": true,
     "PRE_FILTER_PORTS": [443],
 
     "IP_TXT_SHOW_BANDWIDTH": true,
-    "_comment_IP_TXT_SHOW_BANDWIDTH": "在 ip.txt 里面带上测速网速大小",
-
     "IP_TXT_SHOW_LATENCY": false,
 
-    "BANDWIDTH_CANDIDATES": 15,
-    "_comment_BANDWIDTH_CANDIDATES": "💡 核心改动 3：极度关键！把进入带宽测试的候选数缩减到 15 个。这是强制控制名额、不让美国霸榜的终极防御线！",
-
+    "BANDWIDTH_CANDIDATES": 90,
     "TCP_PROBES": 3,
     "MIN_SUCCESS_RATE": 1.0,
     "TIMEOUT": 2.0,
@@ -121,18 +115,14 @@
     "HTTP_TEST_WORKERS": 32,
     "BANDWIDTH_WORKERS": 10,
 
-    "_comment_retry": "重试策略配置",
     "DNS_UPDATE_MAX_RETRIES": 3,
     "DNS_UPDATE_RETRY_DELAY": 3,
     "GITHUB_SYNC_MAX_RETRIES": 3,
     "GITHUB_SYNC_RETRY_DELAY": 3,
     "GIT_SYNC_PROCESS_TIMEOUT": 180,
 
-    "_comment_AD": "ip.txt 广告植入",
     "AD_HEADER_ENABLED": false,
-    "AD_HEADER_LINES": [],
     "AD_FOOTER_ENABLED": false,
-    "AD_FOOTER_LINES": [],
     "AD_PERLINE_ENABLED": false,
     "AD_PERLINE_TEXT": ""
 }
