@@ -1,26 +1,31 @@
 {
-    "_comment": "Cloudflare IP 优选工具配置文件 - 最终完美定制版",
+    "_comment": "Cloudflare IP 优选工具 - 亚洲专场最终版",
 
     "USE_GLOBAL_MODE": false,
-    "_comment_USE_GLOBAL_MODE": "设为 false 开启国家独立赛道，确保每个国家都能跑完网速测速",
+    "_comment_USE_GLOBAL_MODE": "设为 false 开启国家赛道模式，确保 HK 和 JP 节点有独立测速名额",
 
-    "GLOBAL_TOP_N": 10,
-    "_comment_GLOBAL_TOP_N": "最终输出总量",
-
+    "GLOBAL_TOP_N": 15,
     "PER_COUNTRY_TOP_N": 5,
-    "_comment_PER_COUNTRY_TOP_N": "每个国家独立赛道选出 5 个候选节点",
+    "DNS_UPDATE_TARGET_COUNT": 15,
 
-    "DNS_UPDATE_TARGET_COUNT": 10,
-    "_comment_DNS_UPDATE_TARGET_COUNT": "最终存盘总数",
-
-    "ALLOWED_COUNTRIES": ["HK", "JP", "US"],
-    "_comment_ALLOWED_COUNTRIES": "定义国家顺序，此处顺序将决定后续脚本的处理优先级",
+    "ALLOWED_COUNTRIES": ["HK", "JP"],
+    "_comment_ALLOWED_COUNTRIES": "只保留 HK 和 JP，物理剔除 US",
 
     "FILTER_COUNTRIES_ENABLED": true,
     "PRE_FILTER_BLOCKED_ENABLED": true,
-    "PRE_FILTER_BLOCKED_COUNTRIES": ["CN"],
-    "PRE_FILTER_PORT_ENABLED": true,
-    "PRE_FILTER_PORTS": [443],
+    "PRE_FILTER_BLOCKED_COUNTRIES": ["CN", "US"],
+    "_comment_PRE_FILTER_BLOCKED_COUNTRIES": "强力屏蔽：从源头过滤掉美国节点",
+
+    "ADDITIONAL_SOURCES": [
+        {
+            "url": "https://raw.githubusercontent.com/yebekhe/CloudflareYes/main/cf.txt",
+            "enabled": true
+        },
+        {
+            "url": "https://raw.githubusercontent.com/zu1k/cloudflare-ip-select/master/cf.txt",
+            "enabled": true
+        }
+    ],
 
     "IP_TXT_SHOW_BANDWIDTH": true,
     "IP_TXT_SHOW_LATENCY": false,
@@ -36,8 +41,6 @@
     "WXPUSHER_APP_TOKEN": "your_app_token_here",
     "WXPUSHER_UIDS": ["your_uid_here"],
     "WXPUSHER_API_URL": "https://wxpusher.zjiecode.com/api/send/message",
-    "NOTIFY_TIMEOUT": 3,
-    "NOTIFY_CONNECT_TIMEOUT": 3,
 
     "CF_ENABLED": true,
     "CF_API_TOKEN": "your_CF_API_TOKEN",
@@ -45,84 +48,16 @@
     "CF_DNS_RECORD_NAME": "your_CF_DNS_RECORD_NAME",
     "CF_TTL": 60,
     "CF_PROXIED": false,
-    "CF_DNS_CONNECT_TIMEOUT": 3,
-    "CF_DNS_READ_TIMEOUT": 3,
     "DNS_RECORD_TYPE": "TXT",
-
-    "ADDITIONAL_SOURCES": [
-        {
-            "url": "https://zip.cm.edu.kg/all.txt",
-            "enabled": true
-        },
-        {
-            "url": "https://countrymerge.pages.dev/all.txt",
-            "enabled": true
-        }
-    ],
-
-    "FETCH_MAX_RETRIES": 3,
-    "FETCH_RETRY_DELAY": 3,
-    "FETCH_TIMEOUT": 3,
-    "FETCH_CONNECT_TIMEOUT": 3,
-
-    "OUTPUT_FILE": "ip.txt",
-    "ENABLE_LOGGING": false,
-    "LOG_FILE": "cfnb.log",
-
-    "TEST_AVAILABILITY": true,
-    "AVAILABILITY_CHECK_API": "https://api.090227.xyz/check",
-    "AVAILABILITY_TIMEOUT": 3,
-    "AVAILABILITY_CONNECT_TIMEOUT": 3,
-    "AVAILABILITY_RETRY_MAX": 2,
-    "AVAILABILITY_RETRY_DELAY": 3,
-    "AVAILABILITY_INNER_RETRY_ENABLED": true,
-    "AVAILABILITY_INNER_RETRY_MAX": 2,
-    "AVAILABILITY_INNER_RETRY_DELAY": 3,
-
-    "HTTP_TEST_ENABLED": true,
-    "HTTP_TEST_TIMEOUT": 3,
-    "HTTP_TEST_CONNECT_TIMEOUT": 3,
-    "HTTP_TEST_MAX_ROUNDS": 2,
-    "HTTP_TEST_ROUND_DELAY": 3,
-    "HTTP_TEST_INNER_RETRY_ENABLED": true,
-    "HTTP_TEST_MAX_RETRIES": 2,
-    "HTTP_TEST_RETRY_DELAY": 3,
-    "HTTP_TEST_METHOD": "HEAD",
-
-    "FILTER_IPV6_AVAILABILITY": true,
-    "FILTER_BLOCKED_COUNTRIES_ENABLED": false, 
-
-    "BLOCKED_COUNTRIES": [
-        "BD", "BI", "BY", "CD", "CF", "CN", "CU", "DE", "ET",
-        "IR", "KP", "LY", "MO", "NG", "NL", "PK", "RU", "SD", "SO",
-        "SY", "TH", "TW", "UA", "VE", "VN", "YE", "ZW"
-    ],
-
-    "DNS_IP_RISK_FILTER_ENABLED": false,
-    "DNS_IP_RISK_MAX_LEVEL": "高风险",
 
     "BANDWIDTH_SIZE_MB": 0.5,
     "BANDWIDTH_TIMEOUT": 3,
     "BANDWIDTH_RETRY_MAX": 2,
     "BANDWIDTH_RETRY_DELAY": 3,
     "BANDWIDTH_URL_TEMPLATE": "https://speed.cloudflare.com/__down?bytes={bytes}",
-    "BANDWIDTH_PROCESS_BUFFER": 2,
-    "BANDWIDTH_CONNECT_TIMEOUT": 3,
 
     "MAX_WORKERS": 200,
     "AVAILABILITY_WORKERS": 32,
-    "FALLBACK_WORKERS": 32,
     "HTTP_TEST_WORKERS": 32,
-    "BANDWIDTH_WORKERS": 10,
-
-    "DNS_UPDATE_MAX_RETRIES": 3,
-    "DNS_UPDATE_RETRY_DELAY": 3,
-    "GITHUB_SYNC_MAX_RETRIES": 3,
-    "GITHUB_SYNC_RETRY_DELAY": 3,
-    "GIT_SYNC_PROCESS_TIMEOUT": 180,
-
-    "AD_HEADER_ENABLED": false,
-    "AD_FOOTER_ENABLED": false,
-    "AD_PERLINE_ENABLED": false,
-    "AD_PERLINE_TEXT": ""
+    "BANDWIDTH_WORKERS": 10
 }
