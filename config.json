@@ -1,34 +1,39 @@
 {
-    "_comment": "Cloudflare IP 优选工具配置文件 - 请根据需求修改下方参数",
+    "_comment": "Cloudflare IP 优选工具配置文件 - 已完美定制：香港5、日本2、美国3",
 
     "USE_GLOBAL_MODE": false,
-    "_comment_USE_GLOBAL_MODE": "💡 已修改：关闭全局大混战，开启分国家赛道模式",
+    "_comment_USE_GLOBAL_MODE": "💡 必须为 false：开启分国家独立赛道模式",
 
     "GLOBAL_TOP_N": 10,
-    "_comment_GLOBAL_TOP_N": "全局模式下最终保留的节点数量",
+    "_comment_GLOBAL_TOP_N": "最终保留的总节点数量",
 
     "PER_COUNTRY_TOP_N": 5,
-    "_comment_PER_COUNTRY_TOP_N": "💡 已修改：每个赛道默认最多录取 5 个（这样香港能顺利拿到5个）",
+    "_comment_PER_COUNTRY_TOP_N": "💡 核心设定 1：每个赛道最多录取5个（确保香港能拿满5个）",
+
+    "DNS_UPDATE_TARGET_COUNT": 10, 
+    "_comment_DNS_UPDATE_TARGET_COUNT": "输出到 ip.txt 的最终总数控制在 10 个",
+
+    "ALLOWED_COUNTRIES": ["HK", "JP", "US"],
+    "_comment_ALLOWED_COUNTRIES": "💡 核心设定 2：注意这个数组的顺序！作者的代码会严格按照你写的顺序（先HK，再JP，最后US）来进行第一层国家排序",
+
+    "FILTER_COUNTRIES_ENABLED": true,
+    "PRE_FILTER_BLOCKED_ENABLED": true,
+    "PRE_FILTER_BLOCKED_COUNTRIES": ["CN"],
+    "PRE_FILTER_PORT_ENABLED": true,
+    "PRE_FILTER_PORTS": [443],
+
+    "IP_TXT_SHOW_BANDWIDTH": true,
+    "_comment_IP_TXT_SHOW_BANDWIDTH": "💡 核心设定 3：设置为 true，让最终生成的 ip.txt 里面带上测速网速大小（例如：#HK|58.42Mbps）",
+
+    "IP_TXT_SHOW_LATENCY": false,
+    "_comment_IP_TXT_SHOW_LATENCY": "是否在 ip.txt 中显示延迟数字",
 
     "BANDWIDTH_CANDIDATES": 90,
-    "_comment_BANDWIDTH_CANDIDATES": "进入带宽测速的候选节点数",
-
     "TCP_PROBES": 3,
     "MIN_SUCCESS_RATE": 1.0,
     "TIMEOUT": 2.0,
     "SOCKET_DEFAULT_TIMEOUT": 3,
     "PROGRESS_PRINT_INTERVAL": 1,
-
-    "FILTER_COUNTRIES_ENABLED": true,
-    "_comment_FILTER_COUNTRIES_ENABLED": "前置白名单开关",
-
-    "ALLOWED_COUNTRIES": ["HK", "JP", "US"],
-    "_comment_ALLOWED_COUNTRIES": "只保留香港、日本、美国",
-
-    "PRE_FILTER_BLOCKED_ENABLED": true,
-    "PRE_FILTER_BLOCKED_COUNTRIES": ["CN"],
-    "PRE_FILTER_PORT_ENABLED": true,
-    "PRE_FILTER_PORTS": [443],
 
     "ENABLE_WXPUSHER": true,
     "WXPUSHER_APP_TOKEN": "your_app_token_here",
@@ -37,7 +42,6 @@
     "NOTIFY_TIMEOUT": 3,
     "NOTIFY_CONNECT_TIMEOUT": 3,
 
-    "_comment_cf_dns": "Cloudflare DNS 批量更新配置",
     "CF_ENABLED": true,
     "CF_API_TOKEN": "your_CF_API_TOKEN",
     "CF_ZONE_ID": "your_CF_ZONE_ID",
@@ -99,9 +103,6 @@
 
     "DNS_IP_RISK_FILTER_ENABLED": false,
     "DNS_IP_RISK_MAX_LEVEL": "高风险",
-    
-    "DNS_UPDATE_TARGET_COUNT": 10,
-    "_comment_DNS_UPDATE_TARGET_COUNT": "💡 最终提取给订阅和DNS的数量保持为 10 个",
 
     "BANDWIDTH_SIZE_MB": 0.5,
     "BANDWIDTH_TIMEOUT": 3,
@@ -130,8 +131,5 @@
     "AD_FOOTER_ENABLED": false,
     "AD_FOOTER_LINES": [],
     "AD_PERLINE_ENABLED": false,
-    "AD_PERLINE_TEXT": " 纯文本",
-
-    "IP_TXT_SHOW_BANDWIDTH": false,
-    "IP_TXT_SHOW_LATENCY": false
+    "AD_PERLINE_TEXT": ""
 }
