@@ -17,13 +17,13 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
+      # 💡 优化：先检查文件是否存在，防止报错
       - name: Run script
         env:
           MY_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: python main.py
+        run: |
+          if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
+          python main.py
 
       - name: Commit and Push changes
         env:
@@ -33,12 +33,10 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
           if [ -f "ip.txt" ]; then
-            # 💡 精准重组外挂：按 HK-5, JP-2, US-3 的比例裁剪和排序
-            # 如果测速结果中没有 US（因为我们在 config 里禁用了），它会按优先级提取
-            grep "#HK" ip.txt | sort -t' ' -k2 -nr | head -n 5 > temp_ip.txt
-            grep "#JP" ip.txt | sort -t' ' -k2 -nr | head -n 2 >> temp_ip.txt
-            # 如果你有特定的 US 需求，可以取消下面这行的注释，但需要先在 config 中允许 US
-            # grep "#US" ip.txt | sort -t' ' -k2 -nr | head -n 3 >> temp_ip.txt
+            # 💡 精准重组外挂：HK-5, JP-2, US-3 比例裁剪
+            # 使用 -E 支持扩展正则表达式，确保筛选准确
+            grep -E "#HK" ip.txt | sort -t' ' -k2 -nr | head -n 5 > temp_ip.txt
+            grep -E "#JP" ip.txt | sort -t' ' -k2 -nr | head -n 2 >> temp_ip.txt
             
             mv temp_ip.txt ip.txt
             
