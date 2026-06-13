@@ -1,21 +1,13 @@
 {
     "_comment": "Cloudflare IP 优选工具 - 亚洲专场最终版",
-
     "USE_GLOBAL_MODE": false,
-    "_comment_USE_GLOBAL_MODE": "设为 false 开启国家赛道模式，确保 HK 和 JP 节点有独立测速名额",
-
     "GLOBAL_TOP_N": 15,
     "PER_COUNTRY_TOP_N": 5,
     "DNS_UPDATE_TARGET_COUNT": 15,
-
     "ALLOWED_COUNTRIES": ["HK", "JP"],
-    "_comment_ALLOWED_COUNTRIES": "只保留 HK 和 JP，物理剔除 US",
-
     "FILTER_COUNTRIES_ENABLED": true,
     "PRE_FILTER_BLOCKED_ENABLED": true,
     "PRE_FILTER_BLOCKED_COUNTRIES": ["CN", "US"],
-    "_comment_PRE_FILTER_BLOCKED_COUNTRIES": "强力屏蔽：从源头过滤掉美国节点",
-
     "ADDITIONAL_SOURCES": [
         {
             "url": "https://raw.githubusercontent.com/yebekhe/CloudflareYes/main/cf.txt",
@@ -26,38 +18,9 @@
             "enabled": true
         }
     ],
-
     "IP_TXT_SHOW_BANDWIDTH": true,
     "IP_TXT_SHOW_LATENCY": false,
-
     "BANDWIDTH_CANDIDATES": 90,
-    "TCP_PROBES": 3,
-    "MIN_SUCCESS_RATE": 1.0,
     "TIMEOUT": 2.0,
-    "SOCKET_DEFAULT_TIMEOUT": 3,
-    "PROGRESS_PRINT_INTERVAL": 1,
-
-    "ENABLE_WXPUSHER": true,
-    "WXPUSHER_APP_TOKEN": "your_app_token_here",
-    "WXPUSHER_UIDS": ["your_uid_here"],
-    "WXPUSHER_API_URL": "https://wxpusher.zjiecode.com/api/send/message",
-
-    "CF_ENABLED": true,
-    "CF_API_TOKEN": "your_CF_API_TOKEN",
-    "CF_ZONE_ID": "your_CF_ZONE_ID",
-    "CF_DNS_RECORD_NAME": "your_CF_DNS_RECORD_NAME",
-    "CF_TTL": 60,
-    "CF_PROXIED": false,
-    "DNS_RECORD_TYPE": "TXT",
-
-    "BANDWIDTH_SIZE_MB": 0.5,
-    "BANDWIDTH_TIMEOUT": 3,
-    "BANDWIDTH_RETRY_MAX": 2,
-    "BANDWIDTH_RETRY_DELAY": 3,
-    "BANDWIDTH_URL_TEMPLATE": "https://speed.cloudflare.com/__down?bytes={bytes}",
-
-    "MAX_WORKERS": 200,
-    "AVAILABILITY_WORKERS": 32,
-    "HTTP_TEST_WORKERS": 32,
-    "BANDWIDTH_WORKERS": 10
+    "MAX_WORKERS": 200
 }
