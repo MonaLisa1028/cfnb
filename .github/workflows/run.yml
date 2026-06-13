@@ -36,15 +36,22 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
         if [ -f "ip.txt" ]; then
-          # 💡 强力纠偏外挂：从跑完网速的文件里，精准拔尖
-          grep "#HK" ip.txt | head -n 5 > temp_ip.txt
-          grep "#JP" ip.txt | head -n 2 >> temp_ip.txt
-          grep "#US" ip.txt | head -n 3 >> temp_ip.txt
+          # 1. 先把原文件备份一下（防错）
+          cp ip.txt original_ip.txt
           
-          # 覆盖回原文件
-          mv temp_ip.txt ip.txt
+          # 2. 核心逻辑：从原始结果中，按网速从大到小（-k2 -nr）提取指定数量
+          # 如果某个地区节点不足，这几行会自动处理，不会报错
+          grep "#HK" original_ip.txt | sort -t' ' -k2 -nr | head -n 5 > sorted_ip.txt
+          grep "#JP" original_ip.txt | sort -t' ' -k2 -nr | head -n 2 >> sorted_ip.txt
+          grep "#US" original_ip.txt | sort -t' ' -k2 -nr | head -n 3 >> sorted_ip.txt
           
+          # 3. 如果通过上面的筛选，最终结果不足 10 个（比如没抓到足够多的 HK），
+          # 我们可以选择补齐，或者直接保留当前已有的高质量结果。
+          # 这里直接覆盖回 ip.txt
+          mv sorted_ip.txt ip.txt
+          
+          # 4. 执行提交
           git add ip.txt
-          git commit -m "Automated IP Update with Perfect Sorting" || exit 0
+          git commit -m "Automated IP Update: HK5-JP2-US3 Logic" || exit 0
           git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
         fi
