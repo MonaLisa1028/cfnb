@@ -36,15 +36,15 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
         if [ -f "ip.txt" ]; then
-          # 💡 强力纠偏外挂：不管原文件多乱，精准拦截提取我们要的数量
+          # 💡 强力纠偏外挂：从跑完网速的文件里，精准拔尖
           grep "#HK" ip.txt | head -n 5 > temp_ip.txt
           grep "#JP" ip.txt | head -n 2 >> temp_ip.txt
           grep "#US" ip.txt | head -n 3 >> temp_ip.txt
           
-          # 将排版完美的结果覆盖回 ip.txt
+          # 覆盖回原文件
           mv temp_ip.txt ip.txt
           
           git add ip.txt
-          git commit -m "Automated IP Update with Custom Sorting" || exit 0
+          git commit -m "Automated IP Update with Perfect Sorting" || exit 0
           git push "https://MonaLisa1028:${MY_TOKEN}@github.com/MonaLisa1028/cfnb.git" HEAD:main --force
         fi
